@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/dungeon-generation-visualizer/static/css/main.d1b05096.chunk.css",
+    "main.js": "/dungeon-generation-visualizer/static/js/main.bf9dc1e9.chunk.js",
+    "main.js.map": "/dungeon-generation-visualizer/static/js/main.bf9dc1e9.chunk.js.map",
+    "runtime-main.js": "/dungeon-generation-visualizer/static/js/runtime-main.89ff622b.js",
+    "runtime-main.js.map": "/dungeon-generation-visualizer/static/js/runtime-main.89ff622b.js.map",
+    "static/js/2.53ff6065.chunk.js": "/dungeon-generation-visualizer/static/js/2.53ff6065.chunk.js",
+    "static/js/2.53ff6065.chunk.js.map": "/dungeon-generation-visualizer/static/js/2.53ff6065.chunk.js.map",
+    "index.html": "/dungeon-generation-visualizer/index.html",
+    "precache-manifest.71a958648e1bf4cc744c0f8c09b0164b.js": "/dungeon-generation-visualizer/precache-manifest.71a958648e1bf4cc744c0f8c09b0164b.js",
+    "service-worker.js": "/dungeon-generation-visualizer/service-worker.js",
+    "static/css/main.d1b05096.chunk.css.map": "/dungeon-generation-visualizer/static/css/main.d1b05096.chunk.css.map",
+    "static/js/2.53ff6065.chunk.js.LICENSE.txt": "/dungeon-generation-visualizer/static/js/2.53ff6065.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/dungeon-generation-visualizer/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.89ff622b.js",
+    "static/js/2.53ff6065.chunk.js",
+    "static/css/main.d1b05096.chunk.css",
+    "static/js/main.bf9dc1e9.chunk.js"
+  ]
+}
