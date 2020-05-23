@@ -19,7 +19,7 @@ class BSPFirstSplitPath extends Component {
 
         return (
             <path id="BSP-split-path-0" d={pathString} style={pathStyle}>
-                {getAnimateTag(dur)}
+                {animatePath(dur)}
             </path>
         );
     }
@@ -61,13 +61,39 @@ class BSPSplitPath extends Component {
 
         return (
             <line id={id} x1={x1} y1={y1} x2={x2} y2={y2} style={pathStyle}>
-                {getAnimateTag(dur)}
+                {animatePath(dur)}
             </line>
         );
     }
 }
 
-function getAnimateTag(dur) {
+class BSPRoomPath extends Component {
+    render() {
+        const { id, convertedRoom, visuSpeed } = this.props;
+
+        let { x, y, width, height } = convertedRoom.getSize();
+
+        let pathString = getRectangleSplitPath(x, y, width, height);
+
+        let length = (width + height) * 2;
+        let pathStyle = {
+            strokeDasharray: length,
+            strokeDashoffset: length,
+        };
+
+        let dur = getVisualizationDuration(visuSpeed, length);
+
+        return (
+            <path id={id} d={pathString} style={pathStyle}>
+                {animatePath(dur)}
+            </path>
+        );
+    }
+}
+
+export { BSPFirstSplitPath, BSPSplitPath, BSPRoomPath };
+
+function animatePath(dur) {
     return (
         <animate
             attributeType="CSS"
@@ -83,8 +109,6 @@ function getAnimateTag(dur) {
 function getVisualizationDuration(visuSpeed, length) {
     return length / visuSpeed;
 }
-
-export { BSPFirstSplitPath, BSPSplitPath };
 
 function getRectangleSplitPath(x, y, width, height) {
     return (

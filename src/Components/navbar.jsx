@@ -54,13 +54,45 @@ class Navbar extends Component {
         this.setState({ visuState: "start" });
 
         let g = document.getElementById("BSP-split");
-        console.log(g);
-        console.log(g.children);
-        // console.log(g.children.length);
 
         let durTotal = 0;
 
-        for (let i = 0; i < g.children.length; i++) {
+        for (let i = 0; i < g.childElementCount; i++) {
+            let path = g.children[i];
+            let dur = path.children[0].getAttribute("dur");
+
+            //trim the word s
+            dur = dur.substring(0, dur.length - 1);
+            dur *= 1000;
+
+            setTimeout(() => {
+                path.children[0].beginElement();
+            }, durTotal + i * 200);
+
+            durTotal += dur;
+        }
+
+        durTotal += g.childElementCount * 200 + 500;
+        let a = document.getElementById("animate-split-gray");
+        let durA = 0;
+        durA = a.getAttribute("dur");
+        durA = durA.substring(0, durA.length - 1);
+        durA *= 1000;
+
+        setTimeout(() => {
+            a.beginElement();
+            a = document.getElementById("animate-split-thin");
+            a.beginElement();
+        }, durTotal);
+
+        console.log(durA);
+        durTotal += durA;
+
+        g = document.getElementById("BSP-rooms");
+        console.log(g);
+        console.log(g.children);
+
+        for (let i = 0; i < g.childElementCount; i++) {
             let path = g.children[i];
             let dur = path.children[0].getAttribute("dur");
 

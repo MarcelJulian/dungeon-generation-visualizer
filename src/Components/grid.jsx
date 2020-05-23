@@ -1,8 +1,14 @@
 import React, { Component } from "react";
 import BSP from "./BSP/BSP.js";
-import { BSPFirstSplitPath, BSPSplitPath } from "./BSP/SVGComponents.jsx";
+import {
+    BSPFirstSplitPath,
+    BSPSplitPath,
+    BSPRoomPath,
+} from "./BSP/SVGComponents.jsx";
 import { ConvertedLeaf } from "./BSP/leaf.js";
+import { ConvertedRoom } from "./BSP/room.js";
 import Leaf from "./BSP/leaf.js";
+import Room from "./BSP/room.js";
 import "./grid.css";
 
 class Grid extends Component {
@@ -95,13 +101,17 @@ class Grid extends Component {
     };
 }
 
+function calculateBSP(col, row) {
+    return BSP(0, 0, col, row);
+}
+
 function BSPSplitSVG(props) {
-    const leaves = calculateBSP(props.curState.column, props.curState.row);
-    // var leaves = [];
-    // leaves.push(new Leaf(0, 0, 25, 15, true, false, 10));
-    // leaves.push(new Leaf(0, 0, 10, 15, false, true, 8));
-    // leaves.push(new Leaf(10, 0, 15, 15, false, true, 3));
-    console.log(leaves);
+    const tree = calculateBSP(props.curState.column, props.curState.row);
+    // var tree = [];
+    // tree.push(new Leaf(0, 0, 25, 15, true, false, 10));
+    // tree.push(new Leaf(0, 0, 10, 15, false, true, 8));
+    // tree.push(new Leaf(10, 0, 15, 15, false, true, 3));
+    console.log(tree);
     // console.log(props.curState);
 
     var gridStyle = {
@@ -112,19 +122,20 @@ function BSPSplitSVG(props) {
     return (
         <svg style={gridStyle}>
             <g id="BSP-split" className="BSP-svg-paths">
-                {createFirstSplitPath(
-                    leaves[0],
-                    props.curState,
-                    props.visuSpeed
-                )}
-                {createSplitPath(leaves, props.curState, props.visuSpeed)}
+                {createFirstSplitPath(tree[0], props.curState, props.visuSpeed)}
+                {createSplitPath(tree, props.curState, props.visuSpeed)}
+            </g>
+            {getAnimateSplitGray()}
+            {getAnimateSplitThin()}
+            <g id="BSP-rooms" className="BSP-svg-paths">
+                {createRoomPath(tree, props.curState, props.visuSpeed)}
             </g>
         </svg>
     );
 }
 
 function createFirstSplitPath(node, curState, visuSpeed) {
-    let convertedLeaf = convertLeaf(node, curState);
+    let convertedLeaf = convertSize(node, curState);
     return (
         <BSPFirstSplitPath
             convertedLeaf={convertedLeaf}
@@ -133,14 +144,14 @@ function createFirstSplitPath(node, curState, visuSpeed) {
     );
 }
 
-function createSplitPath(leaves, curState, visuSpeed) {
+function createSplitPath(tree, curState, visuSpeed) {
     let paths = [];
-    for (let i = 0; i < leaves.length; i++) {
-        let leaf = leaves[i];
+    for (let i = 0; i < tree.length; i++) {
+        let leaf = tree[i];
         // console.log(i + " splitPos: " + leaf.getSplitPos());
         if (leaf.getSplitPos() === 0) continue;
 
-        let convertedLeaf = convertLeaf(leaf, curState);
+        let convertedLeaf = convertSize(leaf, curState);
         let id = "BSP-split-path-" + (i + 1);
         paths.push(
             <BSPSplitPath
@@ -154,11 +165,28 @@ function createSplitPath(leaves, curState, visuSpeed) {
     return paths;
 }
 
-function calculateBSP(col, row) {
-    return BSP(0, 0, col, row);
+function createRoomPath(tree, curState, visuSpeed) {
+    let paths = [];
+    for (let i = 0; i < tree.length; i++) {
+        let leaf = tree[i];
+
+        if (leaf.getRoom() === null) continue;
+
+        let convertedRoom = convertSize(leaf.getRoom(), curState);
+        let id = "BSP-room-path-" + (i + 1);
+        paths.push(
+            <BSPRoomPath
+                key={id}
+                id={id}
+                convertedRoom={convertedRoom}
+                visuSpeed={visuSpeed}
+            ></BSPRoomPath>
+        );
+    }
+    return paths;
 }
 
-function convertLeaf(leaf, curState) {
+function convertSize(node, curState) {
     const interval = curState.interval;
     const gridWidth = (curState.column * interval) / 2;
     const gridHeight = (curState.row * interval) / 2;
@@ -168,15 +196,57 @@ function convertLeaf(leaf, curState) {
     var x = winXCenter - gridWidth;
     var y = winYCenter - gridHeight;
 
-    return new ConvertedLeaf(
-        x + leaf.getX() * interval,
-        y + leaf.getY() * interval,
-        leaf.getWidth() * interval,
-        leaf.getHeight() * interval,
-        leaf.getIsSplitVertical(),
-        leaf.getIsSplitHorizontal(),
-        leaf.getSplitPos() * interval
+    if (node instanceof Leaf)
+        return new ConvertedLeaf(
+            x + node.getX() * interval,
+            y + node.getY() * interval,
+            node.getWidth() * interval,
+            node.getHeight() * interval,
+            node.getIsSplitVertical(),
+            node.getIsSplitHorizontal(),
+            node.getSplitPos() * interval
+        );
+
+    if (node instanceof Room) {
+        return new ConvertedRoom(
+            x + node.getX() * interval,
+            y + node.getY() * interval,
+            node.getWidth() * interval,
+            node.getHeight() * interval
+        );
+    }
+}
+
+function getAnimateSplitGray() {
+    return (
+        <animate
+            id="animate-split-gray"
+            xlinkHref="#BSP-split"
+            attributeType="CSS"
+            attributeName="stroke"
+            to="gray"
+            dur="2s"
+            fill="freeze"
+            begin="indefinite"
+        />
     );
 }
+
+function getAnimateSplitThin() {
+    return (
+        <animate
+            id="animate-split-thin"
+            xlinkHref="#BSP-split"
+            attributeType="CSS"
+            attributeName="stroke-width"
+            to="3"
+            dur="2s"
+            fill="freeze"
+            begin="indefinite"
+        />
+    );
+}
+
+function convertRoom() {}
 
 export default Grid;

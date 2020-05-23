@@ -1,5 +1,6 @@
 //Classes in javascript is weird. Using classes in this project is fine but,
 //it's better to benefit from the prototype aspect of javascript than the classics.
+import Room from "./room.js";
 
 class Leaf {
     leftChild = null;
@@ -9,6 +10,8 @@ class Leaf {
     isSplitHorizontal = false;
 
     splitPos = 0;
+
+    room = null;
 
     constructor(
         x,
@@ -46,8 +49,8 @@ class Leaf {
 
     //lowest and highest multiplier for random
     //these limits are needed to either make the splits size vary or similar
-    lowerLim = 0.3;
-    upperLim = 0.7;
+    lowerLim = 0.2;
+    upperLim = 0.8;
 
     //smallest possible width and height
     minWidth = 4;
@@ -60,14 +63,22 @@ class Leaf {
         if (this.width < this.minWidth * 2) return false;
 
         let boundary = Math.floor(
-            this.width - this.width * (this.lowerLim + 1.0 - this.upperLim)
+            this.width - this.width * (this.upperLim - this.lowerLim)
         );
-        let rand = Math.floor(Math.random() * boundary);
-        rand += Math.floor(this.width * this.lowerLim);
 
-        //preventing rand being lower than the min size
-        if (rand < this.minWidth || this.width - rand < this.minWidth)
-            rand = this.minWidth;
+        //preventing size being lower than the min size
+        boundary =
+            boundary > this.width - this.minWidth * 2
+                ? this.width - this.minWidth * 2
+                : boundary;
+        boundary += 1;
+        let min =
+            this.width * this.lowerLim > this.minWidth
+                ? this.width * this.lowerLim
+                : this.minWidth;
+
+        let rand = Math.floor(Math.random() * boundary);
+        rand += Math.floor(min);
 
         this.splitPos = rand;
 
@@ -86,14 +97,22 @@ class Leaf {
         if (this.height < this.minHeight * 2) return false;
 
         let boundary = Math.floor(
-            this.height - this.height * (this.lowerLim + 1.0 - this.upperLim)
+            this.height - this.height * (this.upperLim - this.lowerLim)
         );
-        let rand = Math.floor(Math.random() * boundary);
-        rand += Math.floor(this.height * this.lowerLim);
 
-        //preventing rand being lower than the min size
-        if (rand < this.minHeight || this.height - rand < this.minHeight)
-            rand = this.minHeight;
+        //preventing size being lower than the min size
+        boundary =
+            boundary > this.height - this.minHeight * 2
+                ? this.height - this.minHeight * 2
+                : boundary;
+        boundary += 1;
+        let min =
+            this.height * this.lowerLim > this.minHeight
+                ? this.height * this.lowerLim
+                : this.minHeight;
+
+        let rand = Math.floor(Math.random() * boundary);
+        rand += Math.floor(min);
 
         this.splitPos = rand;
 
@@ -105,6 +124,12 @@ class Leaf {
             this.height - rand
         );
         return true;
+    }
+
+    createRoom() {
+        if (this.leftChild !== null) return;
+        if (this.room !== null) return;
+        this.room = new Room(this.x, this.y, this.width, this.height);
     }
 
     toString() {
@@ -129,6 +154,7 @@ class Leaf {
     getIsSplitVertical = () => this.isSplitVertical;
     getIsSplitHorizontal = () => this.isSplitHorizontal;
     getSplitPos = () => this.splitPos;
+    getRoom = () => this.room;
 }
 
 class ConvertedLeaf {

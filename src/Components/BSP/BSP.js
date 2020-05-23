@@ -12,6 +12,8 @@ function splitRoot(root, tree) {
             q.push(q[0].getRightChild());
             // tree.push(q[0].getLeftChild());
             // tree.push(q[0].getRightChild());
+        } else {
+            q[0].createRoom();
         }
         q.shift();
     }
