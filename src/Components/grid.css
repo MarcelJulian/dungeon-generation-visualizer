@@ -1,0 +1,31 @@
+#visualizer {
+    position: relative;
+}
+
+#grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.BSP-svg-paths {
+    fill: none;
+    stroke: black;
+    stroke-width: 5;
+}

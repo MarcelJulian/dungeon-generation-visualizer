@@ -1,0 +1,12 @@
+.animateLine {
+    animation: drawLine 5s linear forwards;
+}
+
+@keyframes drawLine {
+    /* from {
+        stroke-dashoffset: 20;
+    } */
+    to {
+        stroke-dashoffset: 0;
+    }
+}
