@@ -6,46 +6,46 @@ class Navbar extends Component {
         super(props);
         this.state = {
             curAlgo: "BSP",
-            visuState: "stop",
+            visuState: "unplayed",
         };
+
+        this.pausePlay = this.pausePlay.bind(this);
+        this.stop = this.stop.bind(this);
     }
 
     render() {
         return (
             <header>
-                <div id="title">Procedural Dungeon Generation Visualizer</div>
-                <ul id="nav">
-                    <li>
-                        <a href="#">1</a>
-                    </li>
-                    <li>
-                        <a href="#">2</a>
-                    </li>
-                    <li>
-                        <a href="#">3</a>
-                    </li>
-                </ul>
+                <div id="title">
+                    <b>Dungeon Generation Visualizer</b>
+                </div>
+                <div id="algo">
+                    {this.showButton()}
+                    <div id="algo-name">Binary Space Partitioning</div>
+                </div>
 
-                {/* <button id="vis" onClick={() => this.props.visualizeAlgo()}>
-                    Visualize BSP
-                </button> */}
-
-                {this.showButton()}
+                <div id="control">
+                    {this.showPausePlayButton()}
+                    {this.showStopButton()}
+                </div>
             </header>
         );
     }
 
     showButton() {
-        if (this.state.visuState === "stop")
+        if (this.state.visuState === "unplayed")
             return (
                 <button id="vis" onClick={() => this.visualizeBSPSplit()}>
-                    Visualize BSP
+                    Visualize
                 </button>
             );
-        if (this.state.visuState === "start")
+        if (
+            this.state.visuState === "start" ||
+            this.state.visuState === "pause"
+        )
             return (
                 <button id="vis" onClick={() => this.resetVisualization()}>
-                    Reset Visualization
+                    Reset
                 </button>
             );
     }
@@ -55,68 +55,94 @@ class Navbar extends Component {
 
         let g = document.getElementById("BSP-split");
 
-        let durTotal = 0;
+        let n = g.childElementCount - 1;
+        let beginAnim = "BSP-split-anim-" + n + ".end + 0.2s";
 
-        for (let i = 0; i < g.childElementCount; i++) {
-            let path = g.children[i];
-            let dur = path.children[0].getAttribute("dur");
+        let animGray = document.getElementById("animate-split-gray");
+        let animThin = document.getElementById("animate-split-thin");
 
-            //trim the word s
-            dur = dur.substring(0, dur.length - 1);
-            dur *= 1000;
-
-            setTimeout(() => {
-                path.children[0].beginElement();
-            }, durTotal + i * 200);
-
-            durTotal += dur;
-        }
-
-        durTotal += g.childElementCount * 200 + 500;
-        let a = document.getElementById("animate-split-gray");
-        let durA = 0;
-        durA = a.getAttribute("dur");
-        durA = durA.substring(0, durA.length - 1);
-        durA *= 1000;
-
-        setTimeout(() => {
-            a.beginElement();
-            a = document.getElementById("animate-split-thin");
-            a.beginElement();
-        }, durTotal);
-
-        console.log(durA);
-        durTotal += durA;
+        animGray.setAttribute("begin", beginAnim);
+        animThin.setAttribute("begin", beginAnim);
 
         g = document.getElementById("BSP-rooms");
-        console.log(g);
-        console.log(g.children);
+        n = g.childElementCount - 1;
+        let beginDoor = "BSP-room-anim-" + n + ".end + 0.2s";
 
-        for (let i = 0; i < g.childElementCount; i++) {
-            let path = g.children[i];
-            let dur = path.children[0].getAttribute("dur");
+        let animDoor = document.getElementById("BSP-door-anim-0");
+        let animDoor2 = document.getElementById("BSP-door2-anim-0");
+        animDoor.setAttribute("begin", beginDoor);
+        animDoor2.setAttribute("begin", beginDoor);
 
-            //trim the word s
-            dur = dur.substring(0, dur.length - 1);
-            dur *= 1000;
+        //add class, (element).classList.add("")
 
-            setTimeout(() => {
-                path.children[0].beginElement();
-            }, durTotal + i * 200);
-
-            durTotal += dur;
-        }
+        let SVGRoot = document.getElementById("SVGRoot");
+        SVGRoot.setCurrentTime(0);
+        SVGRoot.unpauseAnimations();
     }
 
     resetVisualization() {
-        this.setState({ visuState: "stop" });
+        this.setState({ visuState: "unplayed" });
 
         let g = document.getElementById("BSP-split");
         while (g.childElementCount) {
             let path = g.children[0];
             path.parentNode.removeChild(path);
         }
-        this.props.resetHandler();
+
+        this.props.BSPtreeHandler(null);
+    }
+
+    showStopButton() {
+        if (this.state.visuState === "unplayed") return;
+        return (
+            <img
+                src={process.env.PUBLIC_URL + "/stop.png"}
+                onClick={this.stop}
+            />
+        );
+    }
+
+    stop() {
+        let SVGRoot = document.getElementById("SVGRoot");
+
+        SVGRoot.setCurrentTime(0);
+        this.setState({ visuState: "pause" });
+
+        if (!SVGRoot.animationsPaused()) {
+            SVGRoot.pauseAnimations();
+        }
+    }
+
+    showPausePlayButton() {
+        if (this.state.visuState === "unplayed") return;
+        return (
+            <img
+                src={
+                    process.env.PUBLIC_URL +
+                    (this.state.visuState === "start"
+                        ? "/pause.png"
+                        : "/play.png")
+                }
+                onClick={this.pausePlay}
+            />
+        );
+    }
+
+    pausePlay() {
+        if (this.state.visuState === "pause")
+            this.setState({ visuState: "start" });
+        else if (this.state.visuState === "start")
+            this.setState({ visuState: "pause" });
+
+        let SVGRoot = document.getElementById("SVGRoot");
+        if (SVGRoot === null) return;
+        console.log(SVGRoot.getCurrentTime());
+
+        if (SVGRoot.animationsPaused()) {
+            SVGRoot.unpauseAnimations();
+        } else {
+            SVGRoot.pauseAnimations();
+        }
     }
 }
 

@@ -1,54 +1,48 @@
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 header {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  padding: 30px 5%;
-  background-color: #24252a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 2%;
+    background-color: #24252a;
 }
 
-#nav a,
-#vis,
 #title {
-  color: #edf0f1;
-  text-decoration: none;
+    margin-right: 5%;
 }
 
-#nav {
-  list-style: none;
-  display: flex;
+#algo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
-#nav li {
-  padding: 0px 20px;
-}
-
-#nav li a {
-  transition: all 0.3s ease 0s;
-}
-
-#nav li a:hover {
-  color: #0088a9;
+button,
+#title,
+#algo-name {
+    color: #edf0f1;
+    text-decoration: none;
 }
 
 button {
-  font: inherit;
+    font: inherit;
 }
 
-#vis {
-  padding: 9px 25px;
-  background-color: rgba(0, 136, 169, 1);
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s ease 0s;
+button {
+    padding: 5px 15px;
+    margin: 5px 15px;
+    background-color: rgba(0, 136, 169, 1);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
 }
 
-#vis:hover {
-  background-color: rgba(0, 136, 169, 0.8);
+button:hover {
+    background-color: rgba(0, 136, 169, 0.8);
 }

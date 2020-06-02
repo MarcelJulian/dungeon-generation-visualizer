@@ -17,6 +17,10 @@ function splitRoot(root, tree) {
         }
         q.shift();
     }
+
+    //run createConnector() from root
+    tree[0].createConnector();
+
     return tree;
 }
 
