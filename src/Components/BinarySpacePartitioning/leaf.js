@@ -159,37 +159,17 @@ class Leaf {
             this.getIsSplitVertical()
         );
 
-        console.log("Left before trim");
-        leftSideCoors.forEach((e) => {
-            console.log(e.getData());
-        });
-
         leftSideCoors = this.trimSide(
             leftSideCoors,
             "left",
             this.getIsSplitVertical()
         );
 
-        console.log("Left after trim");
-        leftSideCoors.forEach((e) => {
-            console.log(e.getData());
-        });
-
-        console.log("Right before trim");
-        rightSideCoors.forEach((e) => {
-            console.log(e.getData());
-        });
-
         rightSideCoors = this.trimSide(
             rightSideCoors,
             "right",
             this.getIsSplitVertical()
         );
-
-        console.log("Right after trim");
-        rightSideCoors.forEach((e) => {
-            console.log(e.getData());
-        });
 
         let split = this.splitPos;
         if (this.isSplitVertical) split += this.x;

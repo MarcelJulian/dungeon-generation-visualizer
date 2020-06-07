@@ -1,33 +1,37 @@
 import React, { Component } from "react";
 import Navbar from "./navbar.jsx";
 import Grid from "./grid.jsx";
+import ContentLayout from "./ContentLayout";
 
 class main extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            curAlgo: "BSP",
+            curAlgo: "bsp",
             visuSpeed: 750, //750 px / sec
-            BSPtree: null,
+            bspTree: null,
+            visuTimestamps: null,
         };
     }
 
-    // getVisualizationState = () => this.state.curVisualization;
-
-    BSPtreeHandler = (val) => {
-        this.setState({ BSPtree: val });
+    bspHandler = (tree, ts = null) => {
+        this.setState({ bspTree: tree, visuTimestamps: ts });
     };
 
     render() {
         return (
-            <div>
-                <Navbar BSPtreeHandler={this.BSPtreeHandler} />
+            <div id="main-wrapper">
+                <Navbar />
+                <ContentLayout
+                    bspHandler={this.bspHandler}
+                    visuTimestamps={this.state.visuTimestamps}
+                />
                 <Grid
                     algo={this.state.curAlgo}
                     visuState={this.state.visuState}
                     visuSpeed={this.state.visuSpeed}
-                    BSPtree={this.state.BSPtree}
-                    BSPtreeHandler={this.BSPtreeHandler}
+                    bspTree={this.state.bspTree}
+                    bspHandler={this.bspHandler}
                 />
             </div>
         );

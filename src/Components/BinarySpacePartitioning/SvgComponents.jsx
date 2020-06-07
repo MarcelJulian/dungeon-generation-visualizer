@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import "./SVGComponents.css";
+import "./SvgComponents.css";
 
 var delay = " + 0.2s";
 
-export class BSPFirstSplitPath extends Component {
+export class BspFirstSplitPath extends Component {
     componentDidMount() {
-        let SVGRoot = document.getElementById("SVGRoot");
-        SVGRoot.pauseAnimations();
+        let svgRoot = document.getElementById("svgRoot");
+        svgRoot.pauseAnimations();
     }
 
     render() {
@@ -25,14 +25,14 @@ export class BSPFirstSplitPath extends Component {
         let dur = getVisualizationDuration(visuSpeed, length);
 
         return (
-            <path id="BSP-split-path-0" d={pathString} style={pathStyle}>
-                {animatePath(dur, "BSP-split-anim-0", "0s")}
+            <path id="bsp-split-path-0" d={pathString} style={pathStyle}>
+                {animatePath(dur, "bsp-split-anim-0", "0s")}
             </path>
         );
     }
 }
 
-export class BSPSplitPath extends Component {
+export class BspSplitPath extends Component {
     render() {
         const { id, convertedLeaf, visuSpeed } = this.props;
 
@@ -78,7 +78,7 @@ export class BSPSplitPath extends Component {
     }
 }
 
-export class BSPRoomPath extends Component {
+export class BspRoomPath extends Component {
     render() {
         const { id, convertedRoom, visuSpeed } = this.props;
 
@@ -107,7 +107,7 @@ export class BSPRoomPath extends Component {
     }
 }
 
-export class BSPConnectorPath extends Component {
+export class BspConnectorPath extends Component {
     render() {
         const {
             id,

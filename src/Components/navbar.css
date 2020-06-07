@@ -1,48 +1,17 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 2%;
-    background-color: #24252a;
+    background-color: var(--dark-blue);
 }
 
 #title {
     margin-right: 5%;
+    color: var(--white);
 }
 
-#algo {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-button,
-#title,
-#algo-name {
-    color: #edf0f1;
-    text-decoration: none;
-}
-
-button {
-    font: inherit;
-}
-
-button {
-    padding: 5px 15px;
-    margin: 5px 15px;
-    background-color: rgba(0, 136, 169, 1);
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease 0s;
-}
-
-button:hover {
-    background-color: rgba(0, 136, 169, 0.8);
+#gh-icon {
+    position: relative;
+    color: var(--white);
 }

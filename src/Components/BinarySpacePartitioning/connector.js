@@ -21,18 +21,6 @@ export default class Connector {
         let coorRightX = rightSide[randRight].getX();
         let coorRightY = rightSide[randRight].getY();
 
-        console.log(
-            "Connector: (" +
-                coorLeftX +
-                ", " +
-                coorLeftY +
-                ") to (" +
-                coorRightX +
-                ", " +
-                coorRightY +
-                ")"
-        );
-
         if (isSplitVertical) {
             let split = splitPos - Math.floor(Math.random() * 2);
             // console.log("Split: " + split);

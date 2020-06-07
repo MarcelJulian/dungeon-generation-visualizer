@@ -1,0 +1,11 @@
+#progress-bar {
+    width: 100%;
+    background-color: var(--dark-blue);
+    border: 1px solid black;
+}
+
+#slider {
+    width: 0%;
+    height: 10px;
+    background-color: var(--light-blue);
+}
