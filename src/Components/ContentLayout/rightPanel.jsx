@@ -6,10 +6,14 @@ import {
     faChevronDown,
     faLongArrowAltLeft,
     faLongArrowAltRight,
+    faRedoAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import "./rightPanel.css";
 
 export default class RightPanel extends Component {
+    stepListener = null;
+    lastpage = 1;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -19,8 +23,13 @@ export default class RightPanel extends Component {
     }
 
     componentDidUpdate() {
-        if (this.state.curPage >= 3 && this.state.curPage <= 5) {
-            this.jumpToStep(this.state.curPage - 3);
+        this.deactivateListener();
+        if (this.lastPage !== this.state.curPage) {
+            if (this.state.curPage >= 3 && this.state.curPage <= 5) {
+                this.jumpToStep(this.state.curPage - 3);
+                this.activateListener(this.state.curPage - 3);
+            }
+            this.lastPage = this.state.curPage;
         }
         this.highlightOption();
     }
@@ -29,6 +38,36 @@ export default class RightPanel extends Component {
         let svgRoot = document.getElementById("svgRoot");
         svgRoot.setCurrentTime(this.props.visuTimestampsSplit[i] / 1000);
         setSliderPos(this.props.visuTimestamps);
+        svgRoot.pauseAnimations();
+        this.props.resetStateHandler(true);
+    };
+
+    activateListener = (i) => {
+        if (this.stepListener === null) {
+            this.stepListener = setInterval(() => {
+                this.limitStep(i);
+            }, 100);
+        }
+    };
+
+    deactivateListener = () => {
+        if (this.stepListener !== null) {
+            clearInterval(this.stepListener);
+            this.stepListener = null;
+        }
+    };
+
+    limitStep = (i) => {
+        let svgRoot = document.getElementById("svgRoot");
+        let curTime = Math.round(svgRoot.getCurrentTime() * 1000);
+        let tsSplit = this.props.visuTimestampsSplit;
+
+        if (curTime > tsSplit[i + 1]) {
+            svgRoot.setCurrentTime(tsSplit[i + 1] / 1000);
+            setSliderPos(this.props.visuTimestamps);
+            svgRoot.pauseAnimations();
+            this.props.resetStateHandler(true);
+        }
     };
 
     highlightOption = () => {
@@ -129,6 +168,7 @@ export default class RightPanel extends Component {
                         </div>
                         <div id="desc-content-wrapper">
                             {this.showDescContentTitle()}
+                            {this.showDescReplayIcon()}
                             {this.showDescContent()}
                             {this.showDescContentPage()}
                         </div>
@@ -198,6 +238,20 @@ export default class RightPanel extends Component {
                 break;
         }
         return <div id="desc-content-title">{title}</div>;
+    };
+
+    showDescReplayIcon = () => {
+        if (this.state.curPage >= 3 && this.state.curPage <= 5) {
+            return (
+                <FontAwesomeIcon
+                    icon={faRedoAlt}
+                    id="desc-replay-icon"
+                    size="lg"
+                    title="Replay"
+                    onClick={() => this.jumpToStep(this.state.curPage - 3)}
+                />
+            );
+        }
     };
 
     showDescContent = () => {

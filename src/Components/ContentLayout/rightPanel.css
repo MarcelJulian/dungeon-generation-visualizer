@@ -1,3 +1,7 @@
+.selected {
+    background-color: var(--dark-blue-shade);
+}
+
 #right-wrapper {
     position: fixed;
     display: flex;
@@ -198,4 +202,12 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+#desc-replay-icon {
+    position: absolute;
+    color: var(--white);
+    top: 60px;
+    left: 30px;
+    cursor: pointer;
 }

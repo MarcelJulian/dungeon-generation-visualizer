@@ -9,7 +9,7 @@ import {
     faStop,
     faStepForward,
     faStepBackward,
-    faRedoAlt,
+    // faRedoAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default class ControlPanel extends Component {
@@ -49,13 +49,13 @@ export default class ControlPanel extends Component {
     showControlButtons = () => {
         return (
             <div id="control-icons">
-                <FontAwesomeIcon
+                {/* <FontAwesomeIcon
                     icon={faRedoAlt}
                     className="icons"
                     size="lg"
                     onClick={this.reset}
                     title="Reset"
-                />
+                /> */}
                 <FontAwesomeIcon
                     icon={faStepBackward}
                     className="icons"
