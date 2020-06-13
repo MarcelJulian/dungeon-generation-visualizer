@@ -427,12 +427,12 @@ function getConnectorPath(path, interval, isSplitVertical) {
 }
 
 function getDoorPath(path, interval, isSplitVertical, id, begin) {
-    let pathStyleThin = {
-        strokeDasharray: interval - 5,
-        strokeDashoffset: interval - 5,
-        stroke: "black",
-        strokeWidth: 1,
-    };
+    // let pathStyleThin = {
+    //     strokeDasharray: interval - 5,
+    //     strokeDashoffset: interval - 5,
+    //     stroke: "black",
+    //     strokeWidth: 1,
+    // };
     let pathStyleWhite = {
         strokeDasharray: interval - 5,
         strokeDashoffset: interval - 5,

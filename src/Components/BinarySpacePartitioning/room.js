@@ -1,4 +1,4 @@
-import { Coor, Size } from "../helper.js";
+import { Coor } from "../helper.js";
 
 class Room {
     minWidth = 2;

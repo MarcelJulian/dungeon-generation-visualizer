@@ -194,6 +194,8 @@ export default class RightPanel extends Component {
             case 6:
                 title = "End Note";
                 break;
+            default:
+                break;
         }
         return <div id="desc-content-title">{title}</div>;
     };
@@ -546,6 +548,8 @@ export default class RightPanel extends Component {
                         </p>
                     </div>
                 );
+            default:
+                break;
         }
     };
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import LeftPanel from "./leftPanel.jsx";
+// import LeftPanel from "./leftPanel.jsx";
 import RightPanel from "./rightPanel.jsx";
 import ControlPanel from "./controlPanel.jsx";
 

@@ -116,7 +116,11 @@
     transform: rotate(0deg);
 }
 
-#desc-title {
+.panel-title {
+    font-size: larger;
+    font-weight: 700;
+    color: var(--light-blue);
+    padding: 10px 40px;
     text-align: center;
 }
 
