@@ -80,3 +80,15 @@ export default class ControlPanelSlider extends Component {
         );
     }
 }
+
+export function setSliderPos(visuTimestamps) {
+    let svgRoot = document.getElementById("svgRoot");
+    let curTime = Math.round(svgRoot.getCurrentTime() * 1000);
+    let ts = visuTimestamps;
+    let maxTime = ts[ts.length - 1];
+
+    let pos = Math.round((curTime / maxTime) * 100000) / 1000;
+
+    let slider = document.getElementById("slider");
+    slider.style.width = pos + "%";
+}

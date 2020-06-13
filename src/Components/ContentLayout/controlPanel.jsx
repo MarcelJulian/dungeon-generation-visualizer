@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./controlPanel.css";
 import ControlPanelSlider from "./controlPanelSlider";
+import { setSliderPos } from "./controlPanelSlider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faPlay,
@@ -18,6 +19,16 @@ export default class ControlPanel extends Component {
             curAlgo: "bsp",
             visuState: "pause",
         };
+    }
+
+    componentDidUpdate() {
+        if (this.props.resetState) {
+            //icon Play
+            this.setState({
+                visuState: "pause",
+            });
+            this.props.resetStateHandler(false);
+        }
     }
 
     render() {
@@ -49,6 +60,7 @@ export default class ControlPanel extends Component {
                     icon={faStepBackward}
                     className="icons"
                     onClick={this.stepBackward}
+                    title="Prev"
                 />
 
                 {this.showPausePlayButton()}
@@ -57,6 +69,7 @@ export default class ControlPanel extends Component {
                     icon={faStepForward}
                     className="icons"
                     onClick={this.stepForward}
+                    title="Next"
                 />
                 <FontAwesomeIcon
                     icon={faStop}
@@ -78,6 +91,9 @@ export default class ControlPanel extends Component {
             let path = g.children[0];
             path.parentNode.removeChild(path);
         }
+        let svgRoot = document.getElementById("svgRoot");
+        svgRoot.setCurrentTime(0);
+        setSliderPos(this.props.visuTimestamps);
 
         this.props.bspHandler(null);
     };
@@ -94,7 +110,7 @@ export default class ControlPanel extends Component {
 
         svgRoot.setCurrentTime(prevTime);
 
-        this.setSliderPos();
+        setSliderPos(this.props.visuTimestamps);
     };
 
     showPausePlayButton() {
@@ -135,30 +151,19 @@ export default class ControlPanel extends Component {
         let nextTime = ts.find((t) => t > curTime) / 1000;
         svgRoot.setCurrentTime(nextTime);
 
-        this.setSliderPos();
+        setSliderPos(this.props.visuTimestamps);
     };
 
     stop = () => {
         let svgRoot = document.getElementById("svgRoot");
 
         svgRoot.setCurrentTime(0);
+        setSliderPos(this.props.visuTimestamps);
 
         this.setState({ visuState: "pause" });
 
         if (!svgRoot.animationsPaused()) {
             svgRoot.pauseAnimations();
         }
-    };
-
-    setSliderPos = () => {
-        let svgRoot = document.getElementById("svgRoot");
-        let curTime = Math.round(svgRoot.getCurrentTime() * 1000);
-        let ts = this.props.visuTimestamps;
-        let maxTime = ts[ts.length - 1];
-
-        let pos = Math.round((curTime / maxTime) * 100000) / 1000;
-
-        let slider = document.getElementById("slider");
-        slider.style.width = pos + "%";
     };
 }

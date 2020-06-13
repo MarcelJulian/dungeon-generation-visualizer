@@ -37,16 +37,24 @@ class Grid extends Component {
         this.updateWindowDimensions();
         window.addEventListener("resize", this.updateWindowDimensions);
 
-        let timestamps = connectBspPaths();
+        let { visuTimestamps, visuTimestampsSplit } = connectBspPaths();
         if (this.props.bspTree === null) {
-            this.props.bspHandler(this.curBspTree, timestamps);
+            this.props.bspHandler(
+                this.curBspTree,
+                visuTimestamps,
+                visuTimestampsSplit
+            );
         }
     }
 
     componentDidUpdate() {
-        let timestamps = connectBspPaths();
+        let { visuTimestamps, visuTimestampsSplit } = connectBspPaths();
         if (this.props.bspTree === null) {
-            this.props.bspHandler(this.curBspTree, timestamps);
+            this.props.bspHandler(
+                this.curBspTree,
+                visuTimestamps,
+                visuTimestampsSplit
+            );
         }
     }
 
@@ -59,7 +67,7 @@ class Grid extends Component {
         let controlHeight = document.getElementById("control-panel")
             .offsetHeight;
 
-        let curWidth = window.innerWidth;
+        let curWidth = window.innerWidth - 400;
         //61 is header height
         let curHeight = window.innerHeight - headerHeight - controlHeight - 1;
         this.setState({
@@ -94,6 +102,7 @@ class Grid extends Component {
                     bspTree={this.props.bspTree}
                     bspHandler={this.props.bspHandler}
                     updateTree={this.updateTree}
+                    settingOptions={this.props.settingOptions}
                 />
             </div>
         );
@@ -154,14 +163,18 @@ class Grid extends Component {
     };
 }
 
-function calculateBsp(col, row) {
-    return BSP(0, 0, col, row);
+function calculateBsp(col, row, settingOptions) {
+    return BSP(0, 0, col, row, settingOptions);
 }
 
 function BspSplitSvg(props) {
     let tree = null;
     if (props.bspTree === null) {
-        tree = calculateBsp(props.curState.column, props.curState.row);
+        tree = calculateBsp(
+            props.curState.column,
+            props.curState.row,
+            props.settingOptions
+        );
         props.updateTree(tree);
     } else tree = props.bspTree;
 
@@ -368,12 +381,11 @@ function connectBspPaths() {
     animDoor.setAttribute("begin", beginDoor);
     animDoor2.setAttribute("begin", beginDoor);
 
-    //add class, (element).classList.add("")
-
     let svgRoot = document.getElementById("svgRoot");
     let animateTags = svgRoot.getElementsByTagName("animate");
     let totalDuration = 0;
     let timestamps = [0];
+    let timestampsSplit = [];
     // console.log(animateTags);
     for (let i = 0; i < animateTags.length; i++) {
         //These animations begin concurrently with another animation
@@ -386,9 +398,24 @@ function connectBspPaths() {
         dur *= 1000;
         totalDuration += dur + 200;
 
+        if (animateTags[i].id === "bsp-split-anim-0") {
+            timestampsSplit.push(totalDuration);
+        } else if (animateTags[i].id === "animate-split-gray") {
+            timestampsSplit.push(totalDuration);
+        } else if (animateTags[i].id === "bsp-door-anim-0") {
+            timestampsSplit.push(totalDuration - dur - 200);
+        }
+
         timestamps.push(totalDuration);
     }
-    return timestamps;
+
+    //pushing the last timestamp
+    timestampsSplit.push(timestamps[timestamps.length - 1]);
+
+    return {
+        visuTimestamps: timestamps,
+        visuTimestampsSplit: timestampsSplit,
+    };
 }
 
 export default Grid;

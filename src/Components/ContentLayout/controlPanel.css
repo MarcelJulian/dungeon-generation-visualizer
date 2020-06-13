@@ -1,7 +1,8 @@
 #control-panel {
     display: flex;
     flex-direction: column;
-    padding: 10px 20%;
+    padding: 10px 0px 10px 125px;
+    width: 875px;
 }
 
 #control-wrapper {

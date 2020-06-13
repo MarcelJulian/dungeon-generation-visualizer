@@ -24,9 +24,9 @@ function splitRoot(root, tree) {
     return tree;
 }
 
-function BSP(x, y, width, height) {
+function BSP(x, y, width, height, settingOptions) {
     var tree = [];
-    var root = new Leaf(x, y, width, height);
+    var root = new Leaf(x, y, width, height, settingOptions);
 
     tree = splitRoot(root, tree);
 

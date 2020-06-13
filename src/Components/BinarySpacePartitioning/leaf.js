@@ -15,11 +15,21 @@ class Leaf {
     room = null;
     connector = null;
 
+    //lowest and highest multiplier for random
+    //these limits are needed to either make the splits size vary or similar
+    lowerLim = 0.2;
+    upperLim = 0.8;
+
+    //smallest possible width and height
+    minWidth = 6;
+    minHeight = 6;
+
     constructor(
         x,
         y,
         width,
         height,
+        settingOptions,
         isSplitVertical = false,
         isSplitHorizontal = false,
         splitPos = 0
@@ -31,6 +41,17 @@ class Leaf {
         this.isSplitVertical = isSplitVertical;
         this.isSplitHorizontal = isSplitHorizontal;
         this.splitPos = splitPos;
+
+        this.settingOptions = settingOptions;
+
+        if (settingOptions[1] === 1) {
+            this.lowerLim = 0.4;
+            this.upperLim = 0.6;
+        }
+        if (settingOptions[2] === 1) {
+            this.minWidth = 4;
+            this.minHeight = 4;
+        }
     }
 
     split() {
@@ -48,15 +69,6 @@ class Leaf {
         if (this.isSplitVertical) return this.splitVertical();
         else if (this.isSplitHorizontal) return this.splitHorizontal();
     }
-
-    //lowest and highest multiplier for random
-    //these limits are needed to either make the splits size vary or similar
-    lowerLim = 0.2;
-    upperLim = 0.8;
-
-    //smallest possible width and height
-    minWidth = 6;
-    minHeight = 6;
 
     //TODO: convert these limits to props
 
@@ -84,12 +96,19 @@ class Leaf {
 
         this.splitPos = rand;
 
-        this.leftChild = new Leaf(this.x, this.y, rand, this.height);
+        this.leftChild = new Leaf(
+            this.x,
+            this.y,
+            rand,
+            this.height,
+            this.settingOptions
+        );
         this.rightChild = new Leaf(
             this.x + rand,
             this.y,
             this.width - rand,
-            this.height
+            this.height,
+            this.settingOptions
         );
         return true;
     }
@@ -118,12 +137,19 @@ class Leaf {
 
         this.splitPos = rand;
 
-        this.leftChild = new Leaf(this.x, this.y, this.width, rand);
+        this.leftChild = new Leaf(
+            this.x,
+            this.y,
+            this.width,
+            rand,
+            this.settingOptions
+        );
         this.rightChild = new Leaf(
             this.x,
             this.y + rand,
             this.width,
-            this.height - rand
+            this.height - rand,
+            this.settingOptions
         );
         return true;
     }
