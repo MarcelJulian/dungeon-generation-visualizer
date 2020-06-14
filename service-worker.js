@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/dungeon-generation-visualizer/precache-manifest.584d7fef156f2f1e2915bb7a129166a9.js"
+  "/dungeon-generation-visualizer/precache-manifest.71ded9bfd98245626addf37cc33f2553.js"
 );
 
 self.addEventListener('message', (event) => {
