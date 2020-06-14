@@ -23,8 +23,8 @@ export default class RightPanel extends Component {
     }
 
     componentDidUpdate() {
-        this.deactivateListener();
         if (this.lastPage !== this.state.curPage) {
+            this.deactivateListener();
             if (this.state.curPage >= 3 && this.state.curPage <= 5) {
                 this.jumpToStep(this.state.curPage - 3);
                 this.activateListener(this.state.curPage - 3);
@@ -43,6 +43,7 @@ export default class RightPanel extends Component {
     };
 
     activateListener = (i) => {
+        console.log(this.stepListener);
         if (this.stepListener === null) {
             this.stepListener = setInterval(() => {
                 this.limitStep(i);
@@ -61,12 +62,26 @@ export default class RightPanel extends Component {
         let svgRoot = document.getElementById("svgRoot");
         let curTime = Math.round(svgRoot.getCurrentTime() * 1000);
         let tsSplit = this.props.visuTimestampsSplit;
+        let animStep1 = document.getElementById("animate-split-gray");
+        let dur = animStep1.getAttribute("dur");
+        dur = dur.substring(0, dur.length - 1);
+        dur *= 1000;
+        dur += 200;
 
-        if (curTime > tsSplit[i + 1]) {
+        if (i === 0) {
+            if (curTime > tsSplit[i + 1] - dur) {
+                svgRoot.setCurrentTime((tsSplit[i + 1] - dur) / 1000);
+                setSliderPos(this.props.visuTimestamps);
+                svgRoot.pauseAnimations();
+                this.props.resetStateHandler(true);
+                this.deactivateListener();
+            }
+        } else if (curTime > tsSplit[i + 1]) {
             svgRoot.setCurrentTime(tsSplit[i + 1] / 1000);
             setSliderPos(this.props.visuTimestamps);
             svgRoot.pauseAnimations();
             this.props.resetStateHandler(true);
+            this.deactivateListener();
         }
     };
 
@@ -248,10 +263,15 @@ export default class RightPanel extends Component {
                     id="desc-replay-icon"
                     size="lg"
                     title="Replay"
-                    onClick={() => this.jumpToStep(this.state.curPage - 3)}
+                    onClick={() => this.replay(this.state.curPage - 3)}
                 />
             );
         }
+    };
+
+    replay = (i) => {
+        this.jumpToStep(i);
+        this.activateListener(i);
     };
 
     showDescContent = () => {
@@ -310,10 +330,21 @@ export default class RightPanel extends Component {
                 return (
                     <div id="desc-content">
                         <p>
-                            This name of the algorithm derives from this step.
-                            In this step, the algo receives the size of desired
-                            dungeon and split it into several areas. This
-                            original size is referred as the root of the tree.
+                            The name of the algorithm derives from this step. In
+                            this step, the algo creates a root node with the the
+                            size of the area (25x15 in this visualizer). This
+                            node is then split recursively to produce multiple
+                            random areas, which will each contain a room.
+                        </p>
+                        <br />
+
+                        <img
+                            src={process.env.PUBLIC_URL + "/step_1.png"}
+                            alt="example"
+                        />
+
+                        <br />
+                        <p>
                             The algo recurse through the root by following these
                             steps:
                         </p>
@@ -394,9 +425,9 @@ export default class RightPanel extends Component {
                                 className="desc-list-dropdown"
                             >
                                 You can either make it more uniform (e.g. by
-                                picking the splitting point of 0.4-0.6 from the
+                                picking the splitting point of 40%-60% from the
                                 length) or more diverse (e.g. by picking the
-                                splitting point of 0.2-0.8 from the length)
+                                splitting point of 20%-80% from the length)
                             </p>
 
                             <li className="desc-list">
