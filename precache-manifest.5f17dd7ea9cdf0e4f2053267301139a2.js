@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "476c778282acdd9d377aa26fd4c35d4b",
+    "revision": "43b3b98d66e9a4c1a0ce08f2b020b621",
     "url": "/dungeon-generation-visualizer/index.html"
   },
   {
-    "revision": "d031fe3db1b4ba200291",
+    "revision": "a44a568d822ad31c9648",
     "url": "/dungeon-generation-visualizer/static/css/main.67fe2d7c.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dungeon-generation-visualizer/static/js/2.2fc751a8.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "d031fe3db1b4ba200291",
-    "url": "/dungeon-generation-visualizer/static/js/main.1c077945.chunk.js"
+    "revision": "a44a568d822ad31c9648",
+    "url": "/dungeon-generation-visualizer/static/js/main.3145655f.chunk.js"
   },
   {
     "revision": "6fc043ec237156556ef0",
